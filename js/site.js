@@ -122,20 +122,27 @@
   }
 
   /* ---------- Filtro por etiqueta en Actividades ---------- */
-  var entriesWrap = document.querySelector('[data-entries]');
-  if(entriesWrap){
-    var chips = document.querySelectorAll('.tag-chip');
+  document.querySelectorAll('[data-entries], [data-filterable]').forEach(function(wrap){
+    var group = wrap.previousElementSibling;
+    while(group && !group.classList.contains('tag-filter')) group = group.previousElementSibling;
+    if(!group) return;
+    var chips = group.querySelectorAll('.tag-chip');
+    var items = wrap.querySelectorAll('.entry, .pub-row');
+    var empty = wrap.querySelector('.pub-empty');
     chips.forEach(function(chip){
       chip.addEventListener('click', function(){
-        var f = chip.dataset.filter;
+        var f = chip.dataset.filter, shown = 0;
         chips.forEach(function(c){ c.classList.toggle('active', c === chip); });
-        entriesWrap.querySelectorAll('.entry').forEach(function(en){
+        items.forEach(function(en){
           var show = (f === 'all') || (en.dataset.tag === f);
           en.style.display = show ? '' : 'none';
+          if(show) shown++;
         });
+        if(empty) empty.style.display = shown ? 'none' : 'block';
+        wrap.scrollTop = 0;
       });
     });
-  }
+  });
 
   /* ---------- Formulario de contacto (Formspree) ---------- */
   var ajaxForm = document.querySelector('[data-ajax-form]');
@@ -197,9 +204,18 @@
       btn.setAttribute('aria-label', 'Ver la foto en grande');
       btn.innerHTML = '<span></span>';
       var host = s.parentElement;
+      // si el contenedor alberga varias fotos (carrusel), envolver cada una
+      if(host.querySelectorAll('image-slot').length > 1){
+        var cell = document.createElement('span');
+        cell.className = 'slot-cell';
+        host.insertBefore(cell, s);
+        cell.appendChild(s);
+        host = cell;
+      }
       if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
       host.appendChild(btn);
       btn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); open(i); });
+      if(s.closest('summary')) btn.addEventListener('mousedown', function(e){ e.preventDefault(); });
     });
 
     box.querySelector('.lightbox__close').addEventListener('click', close);
@@ -213,6 +229,27 @@
       if(e.key === 'ArrowRight') show(idx + 1);
     });
   })();
+
+  /* ---------- Carruseles ---------- */
+  document.querySelectorAll('.carousel').forEach(function(car){
+    var track = car.querySelector('.carousel__track');
+    var prev = car.querySelector('.carousel__nav--prev');
+    var next = car.querySelector('.carousel__nav--next');
+    function step(){ var first = track.querySelector('image-slot'); return first ? first.getBoundingClientRect().width + 14 : 300; }
+    function sync(){
+      var max = track.scrollWidth - track.clientWidth - 2;
+      if(prev) prev.disabled = track.scrollLeft <= 2;
+      if(next) next.disabled = track.scrollLeft >= max;
+      var hide = max <= 2;
+      if(prev) prev.style.display = hide ? 'none' : '';
+      if(next) next.style.display = hide ? 'none' : '';
+    }
+    if(prev) prev.addEventListener('click', function(){ track.scrollLeft -= step(); });
+    if(next) next.addEventListener('click', function(){ track.scrollLeft += step(); });
+    track.addEventListener('scroll', sync);
+    setTimeout(sync, 300);
+    car.closest('details') && car.closest('details').addEventListener('toggle', function(){ setTimeout(sync, 60); });
+  });
 
   /* ---------- Año dinámico en el footer ---------- */
   document.querySelectorAll('[data-year]').forEach(function(el){ el.textContent = new Date().getFullYear(); });
