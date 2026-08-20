@@ -212,7 +212,8 @@ strong{ font-weight: 600; color: var(--blanco); }
 
 /* ===================== HERO ===================== */
 .hero{ position:relative; min-height: 100svh; display:flex; align-items:center; overflow:hidden; }
-.hero > .container{ position:relative; z-index:2; }
+.hero > .container{ position:relative; z-index:2; pointer-events:none; }
+.hero > .container a, .hero > .container button, .hero > .container h1, .hero > .container p{ pointer-events:auto; }
 .hero__bg{ position:absolute; inset:0; z-index:0; }
 .hero__photo{
   position:absolute; inset:0;
@@ -225,7 +226,7 @@ strong{ font-weight: 600; color: var(--blanco); }
   background-image: radial-gradient(120% 90% at 70% 10%, rgba(91,124,147,.30), transparent 60%),
     repeating-linear-gradient(135deg, transparent 0 13px, rgba(169,196,212,.05) 13px 26px); }
 @media (max-width: 768px){ .hero-slot{ width:100%; opacity:.5; } }
-.hero__overlay{ position:absolute; inset:0; background: linear-gradient(180deg, rgba(20,30,40,.55), rgba(20,30,40,.82)); }
+.hero__overlay{ position:absolute; inset:0; pointer-events:none; background: linear-gradient(180deg, rgba(20,30,40,.55), rgba(20,30,40,.82)); }
 .hero__scroll{
   position:absolute; left:50%; bottom:28px; transform:translateX(-50%);
   font-family:var(--mono); font-size:.66rem; letter-spacing:.3em; text-transform:uppercase;
@@ -364,6 +365,9 @@ strong{ font-weight: 600; color: var(--blanco); }
 .map-stage .grat-lbl text{ fill:#5B7C93; opacity:.7; font-family:var(--mono); font-size:8px; letter-spacing:.5px; }
 .map-stage .chile{ fill:rgba(169,196,212,.07); stroke:#A9C4D4; stroke-width:1.1; stroke-opacity:.6; stroke-linejoin:round; }
 .map-pin{ cursor:pointer; }
+.map-pin .hit{ fill:transparent; pointer-events:all; }
+.map-pin:focus{ outline:none; }
+.map-pin:focus-visible .dot{ stroke:var(--hielo); stroke-width:1; paint-order:stroke; }
 .map-pin .dot{ fill:var(--glaciar); transition:.2s; }
 .map-pin .ring{ fill:none; stroke:var(--glaciar); stroke-width:1.2; opacity:.45; transition:.25s; transform-box:fill-box; transform-origin:center; }
 .map-pin.collab .dot{ fill:var(--acero); }
@@ -416,3 +420,84 @@ strong{ font-weight: 600; color: var(--blanco); }
 .breadcrumb-anori{ font-family:var(--mono); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--acero); }
 .breadcrumb-anori a{ color:var(--acero); }
 .breadcrumb-anori a:hover{ color:var(--glaciar); }
+
+/* ===================== ¿QUÉ ES LA CRIÓSFERA? ===================== */
+.cryo-lead{ border-left:2px solid var(--glaciar); padding-left:1.4rem; }
+.cryo-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
+@media(max-width:991px){ .cryo-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:560px){ .cryo-grid{ grid-template-columns:1fr; } }
+.cryo-card{ background:rgba(169,196,212,.04); border:1px solid rgba(169,196,212,.14); border-radius:8px; padding:1.7rem 1.5rem; display:flex; flex-direction:column; gap:.2rem; transition:border-color .2s ease, transform .2s ease, background .2s ease; }
+.cryo-card:hover{ border-color:rgba(169,196,212,.4); transform:translateY(-4px); background:rgba(169,196,212,.07); }
+.cryo-icon{ width:46px; height:46px; margin-bottom:1rem; color:var(--glaciar); }
+.cryo-icon svg{ width:100%; height:100%; display:block; fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; }
+.cryo-card h3{ font-size:1.3rem; margin:0 0 .35rem; }
+.cryo-card p{ margin:0; color:rgba(220,230,235,.72); font-size:.96rem; line-height:1.55; }
+.cryo-term{ font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--acero); margin-bottom:.6rem; }
+
+/* ===================== EQUIPO ===================== */
+.team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.6rem 1.4rem; }
+@media(max-width:991px){ .team-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:480px){ .team-grid{ grid-template-columns:1fr; } }
+.team-card .team-photo{ display:block !important; width:100%; height:auto !important; aspect-ratio:1/1; border:1px solid rgba(169,196,212,.16); margin-bottom:1rem; }
+.team-card h3{ font-size:1.15rem; margin:0 0 .15rem; font-family:var(--serif); }
+.team-card .team-role{ font-family:var(--mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--acero); margin:0; }
+
+/* ===================== MAPA · capa glaciar ===================== */
+.map-stage .coast{ fill:rgba(169,196,212,.06); stroke:#A9C4D4; stroke-width:1; stroke-opacity:.65; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+.map-stage .icefield{ fill:rgba(238,243,246,.5); stroke:#EEF3F6; stroke-width:.6; stroke-opacity:.5; }
+.map-stage .glacier{ fill:var(--niebla); opacity:.5; }
+.map-stage .map-name{ fill:var(--acero); font-family:var(--mono); font-size:6px; letter-spacing:.4px; }
+.map-stage .pin-label{ fill:var(--niebla); font-family:var(--mono); font-size:6.5px; letter-spacing:.3px; opacity:0; transition:opacity .2s; pointer-events:none; }
+.map-pin:hover + .pin-label, .map-pin.active + .pin-label{ opacity:.9; }
+
+
+/* ===================== MAPA LEAFLET ===================== */
+#map{ min-height:600px; height:100%; background:var(--noche-2); border-radius:8px; z-index:0; }
+@media(max-width:900px){ #map{ min-height:420px; } }
+.leaflet-container{ font-family:var(--sans); background:var(--noche-2); }
+.leaflet-control-attribution{ background:rgba(27,29,34,.7) !important; color:var(--acero) !important; font-family:var(--mono); font-size:.62rem; }
+.leaflet-control-attribution a{ color:var(--glaciar) !important; }
+.leaflet-bar a{ background:var(--noche) !important; color:var(--hielo) !important; border-color:rgba(169,196,212,.2) !important; }
+.leaflet-bar a:hover{ background:var(--acero) !important; color:#fff !important; }
+.anori-tip{ background:var(--carbon); color:var(--hielo); border:1px solid rgba(169,196,212,.28); border-radius:4px; font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; box-shadow:0 8px 24px rgba(0,0,0,.4); }
+.anori-tip::before{ border-top-color:rgba(169,196,212,.28) !important; }
+
+/* ===================== GALERÍA DE ACTIVIDAD ===================== */
+.act-gallery{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+.act-gallery image-slot{ display:block !important; width:100%; aspect-ratio:4/3; border:1px solid rgba(169,196,212,.16); border-radius:6px; }
+.pub-authors{ font-family:var(--sans); font-size:.92rem; color:rgba(220,230,235,.6); margin:.35rem 0 0; }
+.pub-source{ font-family:var(--mono); font-size:.74rem; letter-spacing:.04em; color:var(--acero); margin:.3rem 0 0; }
+
+
+/* ===================== ENTRADAS DE ACTIVIDAD ===================== */
+.entries{ border-top:1px solid rgba(169,196,212,.16); }
+.entry{ border-bottom:1px solid rgba(169,196,212,.16); }
+.entry__head{ display:grid; grid-template-columns:96px minmax(0,1fr) auto 22px; align-items:center; gap:1.6rem; padding:1.5rem 0; cursor:pointer; list-style:none; transition:opacity .2s ease; }
+.entry__head::-webkit-details-marker{ display:none; }
+.entry__head:hover{ opacity:.78; }
+.entry__thumb image-slot{ display:block !important; width:96px; height:72px !important; border:1px solid rgba(169,196,212,.16); }
+.entry__meta{ display:flex; flex-direction:column; gap:.3rem; }
+.entry__date{ font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--acero); }
+.entry__t{ font-family:var(--serif); font-size:clamp(1.25rem,2vw,1.6rem); line-height:1.16; color:var(--hielo); }
+.entry__place{ font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; color:rgba(220,230,235,.5); }
+.entry__tag{ font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--glaciar); border:1px solid rgba(169,196,212,.3); border-radius:30px; padding:.3rem .8rem; white-space:nowrap; }
+.entry__chev{ position:relative; width:22px; height:22px; }
+.entry__chev::before, .entry__chev::after{ content:""; position:absolute; top:50%; left:3px; width:16px; height:1.5px; background:var(--glaciar); transition:transform .25s ease; }
+.entry__chev::after{ transform:rotate(90deg); }
+.entry[open] .entry__chev::after{ transform:rotate(0deg); }
+.entry__body{ padding:0 0 2.4rem; max-width:76ch; }
+.entry__body>p{ margin-bottom:1.1rem; }
+.entry__body>p:last-of-type{ margin-bottom:0; }
+.entry__gallery{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-top:1.8rem; max-width:none; }
+.entry__gallery image-slot{ display:block !important; width:100%; height:auto !important; aspect-ratio:4/3; border:1px solid rgba(169,196,212,.16); }
+@media(max-width:768px){
+  .entry__head{ grid-template-columns:64px minmax(0,1fr) 22px; gap:1rem; }
+  .entry__thumb image-slot{ width:64px; height:64px !important; }
+  .entry__tag{ display:none; }
+}
+
+/* ===================== FILTRO POR ETIQUETA ===================== */
+.tag-filter{ display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:2.2rem; }
+.tag-chip{ font-family:var(--mono); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--niebla); background:transparent; border:1px solid rgba(169,196,212,.3); border-radius:30px; padding:.5rem 1.1rem; cursor:pointer; transition:all .2s ease; }
+.tag-chip:hover{ border-color:var(--glaciar); color:var(--blanco); }
+.tag-chip.active{ background:var(--glaciar); border-color:var(--glaciar); color:var(--carbon); }

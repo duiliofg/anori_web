@@ -3,75 +3,386 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>En construcción — Fundación Anori</title>
-<meta name="description" content="Esta sección del sitio de la Fundación Anori está en construcción. Vuelve pronto.">
+<title>Fundación Anori · Proteger la criósfera chilena</title>
+<meta name="description" content="La Fundación Anori promueve la protección integral de la criósfera chilena y los ecosistemas de montaña mediante ciencia independiente, educación y activismo.">
 <link rel="icon" href="assets/iso-black.png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Alice&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="css/anori-site.css?v=1" rel="stylesheet">
-<style>
-  .uc{ min-height:100svh; display:flex; flex-direction:column; position:relative; overflow:hidden; background:var(--noche); }
-  .uc__top{ position:relative; z-index:2; padding:1.6rem 0; }
-  .uc__main{ position:relative; z-index:2; flex:1; display:flex; align-items:center; }
-  .uc__bar{ height:5px; border-radius:4px; background:rgba(169,196,212,.18); overflow:hidden; max-width:320px; }
-  .uc__bar i{ display:block; height:100%; width:42%; background:var(--glaciar); border-radius:4px; }
-</style>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+<link href="css/anori-site.css?v=6" rel="stylesheet">
 </head>
 <body>
 
-<div class="uc">
-  <!-- contornos -->
-  <div class="contours">
-    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-      <g fill="none" stroke="#5B7C93" stroke-width="1" opacity="0.14">
-        <ellipse cx="720" cy="460" rx="160" ry="92"/><ellipse cx="720" cy="460" rx="320" ry="184"/>
-        <ellipse cx="720" cy="460" rx="480" ry="276"/><ellipse cx="720" cy="460" rx="660" ry="380"/>
-        <ellipse cx="720" cy="460" rx="860" ry="494"/>
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<div class="nav-backdrop"></div>
+<nav class="navbar-anori fixed-top" data-screen-label="Navegación">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a class="navbar-brand-anori" href="index.html" aria-label="Fundación Anori, inicio">
+      <img src="assets/iso-white.png" alt="Anori">
+      <span class="wm">ANORI</span>
+    </a>
+    <div class="nav-anori">
+      <a href="index.html" class="active">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="investigacion.html">Investigación</a>
+      <a href="actividades.html">Actividades</a>
+      <a href="apoya.html">Apoya</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="apoya.html" class="btn-anori btn-ice" style="padding:.6rem 1.2rem;">Donar <span class="arr">→</span></a>
+    </div>
+    <button class="nav-toggle" aria-label="Abrir menú"><i></i><i></i></button>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO · VARIANTE B (editorial dividido) ═══════════════════ -->
+<header class="hero" data-screen-label="Hero">
+  <div class="hero__bg">
+    <image-slot id="hero-b" src="assets/photos/hero-b.webp" class="hero-slot" shape="rect" fit="cover" placeholder="Arrastra una foto de glaciar"></image-slot>
+    <div class="hero__overlay" style="background:linear-gradient(90deg, rgba(20,30,40,.97) 36%, rgba(20,30,40,.55) 66%, rgba(20,30,40,.12));"></div>
+  </div>
+  <div class="container" style="padding-top:7rem;">
+    <div class="row align-items-center">
+      <div class="col-lg-8 col-xl-7">
+        <div class="eyebrow-row reveal in">
+          <span class="kicker kicker--glaciar">Voz independiente para el hielo</span>
+          <span class="ln d-none d-md-block"></span>
+        </div>
+        <h1 class="display-anori mb-0 reveal" data-d="1" style="max-width:14ch;">El hielo no espera.</h1>
+        <p class="lead-anori muted-ice mt-4 reveal" data-d="2" style="max-width:50ch;">
+          El 70% del agua dulce del planeta está congelada en la criósfera. Proteger los glaciares de la cordillera es proteger el agua de todos.
+        </p>
+        <div class="d-flex gap-3 flex-wrap mt-5 reveal" data-d="3">
+          <a href="apoya.html" class="btn-anori btn-ice">Súmate a la causa <span class="arr">→</span></a>
+          <a href="investigacion.html" class="btn-anori btn-outline-ice">Ver investigación</a>
+        </div>
+        <div class="slits mt-5 reveal" data-d="4"><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero__scroll"><span>Desplázate</span><span class="bar"></span></div>
+</header>
+
+<!-- ═══════════════════ ¿QUÉ ES LA CRIÓSFERA? ═══════════════════ -->
+<section class="section bg-noche" data-screen-label="¿Qué es la criósfera?">
+  <div class="container">
+    <div class="row gx-5 gy-4 align-items-start mb-5">
+      <div class="col-lg-5">
+        <p class="kicker reveal">01 · ¿Qué es la criósfera?</p>
+        <h2 class="title-xl mt-3 reveal" data-d="1">Toda el agua<br>del planeta<br>en estado sólido</h2>
+      </div>
+      <div class="col-lg-7">
+        <p class="lead-anori cryo-lead reveal" data-d="1">
+          La <strong>criósfera</strong> es el conjunto de las zonas de la Tierra donde el agua se encuentra congelada. No es solo el hielo de los glaciares: abarca cuatro grandes componentes que regulan el clima, el nivel del mar y el agua dulce de la que dependen millones de personas.
+        </p>
+        <p class="muted-ice reveal" data-d="2">
+          En Chile, la criósfera recorre el país de norte a sur, del altiplano a la Antártica, y es la columna vertebral de nuestra seguridad hídrica. Entenderla es el primer paso para protegerla.
+        </p>
+      </div>
+    </div>
+
+    <div class="cryo-grid">
+      <div class="cryo-card reveal" data-d="1">
+        <span class="cryo-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 20 L8 6 L12 14 L15.5 8 L22 20 Z"/><path d="M5.2 14.5 L8 12 L10.4 13.6"/><path d="M2 20 H22"/></svg></span>
+        <p class="cryo-term">Componente 01</p>
+        <h3>Glaciares</h3>
+        <p>Masas de hielo que se forman en tierra por la acumulación de nieve a lo largo de siglos. Son la mayor reserva de agua dulce y abastecen ríos y cuencas.</p>
+      </div>
+      <div class="cryo-card reveal" data-d="2">
+        <span class="cryo-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 V22"/><path d="M3.3 7 L20.7 17"/><path d="M20.7 7 L3.3 17"/><path d="M12 6 l-2.4 -1.6 M12 6 l2.4 -1.6 M12 18 l-2.4 1.6 M12 18 l2.4 1.6 M7 9.8 l-2.7 .2 M17 14.2 l2.7 -.2 M17 9.8 l2.7 .2 M7 14.2 l-2.7 -.2"/></svg></span>
+        <p class="cryo-term">Componente 02</p>
+        <h3>Nieve</h3>
+        <p>La capa estacional que cubre la cordillera cada invierno. Su derretimiento alimenta los ríos en primavera y refleja la energía del sol de vuelta al espacio.</p>
+      </div>
+      <div class="cryo-card reveal" data-d="3">
+        <span class="cryo-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9 L9 5.5 L13 7.5 L10.5 11 Z"/><path d="M13.5 6 L17 4 L20 6.5 L16.5 8.5 Z"/><path d="M2 15 c2.2 1.6 4.4 1.6 6.6 0 s4.4 -1.6 6.6 0 4.4 1.6 6.6 0"/><path d="M2 19 c2.2 1.6 4.4 1.6 6.6 0 s4.4 -1.6 6.6 0 4.4 1.6 6.6 0"/></svg></span>
+        <p class="cryo-term">Componente 03</p>
+        <h3>Hielo marino</h3>
+        <p>El mar congelado de las regiones polares y australes. Regula la temperatura del océano y es hábitat clave de los ecosistemas del frío.</p>
+      </div>
+      <div class="cryo-card reveal" data-d="4">
+        <span class="cryo-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8 H21"/><path d="M3 8 V20 H21 V8"/><path d="M3 13.5 H21"/><path d="M7 16 l1.2 2.4 1.2 -2.4 M13 16 l1.2 2.4 1.2 -2.4"/><path d="M6 10.6 h3 M13 10.6 h4"/></svg></span>
+        <p class="cryo-term">Componente 04</p>
+        <h3>Permafrost</h3>
+        <p>El suelo que permanece congelado todo el año, incluso bajo la superficie. Guarda agua, carbono y la memoria climática de la montaña.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROPÓSITO ═══════════════════ -->
+<section class="section bg-noche-2" data-screen-label="Propósito">
+  <div class="container">
+    <div class="row gx-5 gy-4 align-items-start">
+      <div class="col-lg-5">
+        <p class="kicker reveal">02 · Propósito</p>
+        <h2 class="title-xl mt-3 reveal" data-d="1">Una voz<br>independiente<br>para el hielo</h2>
+      </div>
+      <div class="col-lg-7">
+        <p class="lead-anori reveal" data-d="1">
+          La Fundación Anori promueve la <strong>protección integral de la criósfera chilena y los ecosistemas de montaña</strong>, abordando sus dimensiones físicas, químicas, biológicas y socioculturales.
+        </p>
+        <p class="muted-ice reveal" data-d="2">
+          Lo hacemos mediante investigación científica independiente, educación, comunicación, democratización de la ciencia, deporte y activismo. Constituida en Valdivia el 28 de mayo de 2026 como fundación de beneficencia sin fines de lucro.
+        </p>
+        <a href="nosotros.html" class="link-arrow text-glaciar mt-3 reveal" data-d="2">Quiénes somos <span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ DATOS / CIFRAS (banda clara) ═══════════════════ -->
+<section class="section bg-hielo" data-screen-label="La criósfera en datos">
+  <div class="container">
+    <div class="eyebrow-row reveal">
+      <span class="kicker">03 · La criósfera en datos</span>
+      <span class="ln"></span>
+    </div>
+    <div class="row gy-5 mt-2">
+      <div class="col-md-6 col-lg-3 reveal">
+        <div class="stat-card">
+          <div class="stat-num text-dark-anori">70<span style="font-size:.5em;">%</span></div>
+          <p class="stat-label text-acero mt-3 mb-0">del agua dulce del planeta está congelada en la criósfera.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 reveal" data-d="1">
+        <div class="stat-card">
+          <div class="stat-num text-dark-anori">3<span style="font-size:.5em;">ª</span></div>
+          <p class="stat-label text-acero mt-3 mb-0">mayor reserva de hielo continental: los Campos de Hielo de la Patagonia.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 reveal" data-d="2">
+        <div class="stat-card">
+          <div class="stat-num text-dark-anori">+24<span style="font-size:.5em;">k</span></div>
+          <p class="stat-label text-acero mt-3 mb-0">glaciares inventariados en Chile, el país con más hielo de Sudamérica.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 reveal" data-d="3">
+        <div class="stat-card">
+          <div class="stat-num text-dark-anori">−1<span style="font-size:.5em;">m</span></div>
+          <p class="stat-label text-acero mt-3 mb-0">al año, en promedio, pierden de espesor muchos glaciares andinos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ENFOQUE ═══════════════════ -->
+<section class="section bg-noche-2" data-screen-label="Enfoque">
+  <div class="contours" style="opacity:.5;">
+    <svg viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#5B7C93" stroke-width="1" opacity="0.12">
+        <ellipse cx="1180" cy="120" rx="160" ry="92"/>
+        <ellipse cx="1180" cy="120" rx="300" ry="172"/>
+        <ellipse cx="1180" cy="120" rx="450" ry="258"/>
+        <ellipse cx="1180" cy="120" rx="610" ry="350"/>
       </g>
     </svg>
   </div>
-
-  <!-- top -->
-  <div class="uc__top">
-    <div class="container d-flex align-items-center justify-content-between">
-      <a class="navbar-brand-anori" href="index.html" aria-label="Fundación Anori — inicio">
-        <img src="assets/iso-white.png" alt="Anori" style="width:40px;"><span class="wm">ANORI</span>
-      </a>
-      <span class="mono text-acero" style="font-size:.74rem; letter-spacing:.16em;">anori.cl</span>
-    </div>
-  </div>
-
-  <!-- main -->
-  <div class="uc__main">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-9 col-xl-8">
-          <p class="kicker kicker--glaciar reveal in">Próximamente</p>
-          <h1 class="display-anori mt-3 mb-0 reveal" data-d="1" style="max-width:15ch;">Estamos construyendo esta sección.</h1>
-          <p class="lead-anori muted-ice mt-4 reveal maxw-60" data-d="2">
-            Estamos trabajando para ustedes, gracias por su apoyo.
-          </p>
-
-          <div class="uc__bar mt-5 reveal" data-d="2" aria-hidden="true"><i></i></div>
-          <p class="mono text-acero mt-2 reveal" data-d="2" style="font-size:.72rem; letter-spacing:.1em;">EN DESARROLLO · v1.0</p>
-
-           <div class="d-flex gap-3 flex-wrap mt-5 reveal" data-d="4">
-            <a href="https://instagram.com/anori.cl" target="_blank" rel="noopener" class="btn-anori btn-outline-ice">Síguenos en Instagram</a>
+  <div class="container">
+    <div class="row gx-5">
+      <div class="col-lg-5 mb-5 mb-lg-0">
+        <p class="kicker reveal">04 · Enfoque</p>
+        <h2 class="title-xl mt-3 reveal" data-d="1">Cuatro dimensiones,<br>seis caminos</h2>
+        <p class="muted-ice mt-4 reveal" data-d="2" style="max-width:42ch;">
+          Entendemos la criósfera como un sistema completo. La protegemos abordando todas sus dimensiones y actuando por múltiples vías.
+        </p>
+        <a href="nosotros.html" class="link-arrow text-glaciar mt-3 reveal" data-d="2">Ver nuestro enfoque <span class="arr">→</span></a>
+      </div>
+      <div class="col-lg-7">
+        <div class="row g-4">
+          <div class="col-12 reveal" data-d="1">
+            <p class="kicker kicker--glaciar mb-3">Dimensiones que abordamos</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="card-anori" style="padding:.7rem 1.2rem; display:inline-block; height:auto;">Física</span>
+              <span class="card-anori" style="padding:.7rem 1.2rem; display:inline-block; height:auto;">Química</span>
+              <span class="card-anori" style="padding:.7rem 1.2rem; display:inline-block; height:auto;">Biológica</span>
+              <span class="card-anori" style="padding:.7rem 1.2rem; display:inline-block; height:auto;">Sociocultural</span>
+            </div>
+          </div>
+          <div class="col-sm-6 reveal" data-d="1">
+            <div class="card-anori"><span class="idx">01</span><h3>Investigación</h3><p class="muted-ice mb-0">Ciencia independiente y monitoreo en terreno.</p></div>
+          </div>
+          <div class="col-sm-6 reveal" data-d="2">
+            <div class="card-anori"><span class="idx">02</span><h3>Educación</h3><p class="muted-ice mb-0">Material y formación para comunidades.</p></div>
+          </div>
+          <div class="col-sm-6 reveal" data-d="1">
+            <div class="card-anori"><span class="idx">03</span><h3>Comunicación</h3><p class="muted-ice mb-0">Divulgación clara y abierta del conocimiento.</p></div>
+          </div>
+          <div class="col-sm-6 reveal" data-d="2">
+            <div class="card-anori"><span class="idx">04</span><h3>Democratización</h3><p class="muted-ice mb-0">Acceso libre a datos y resultados.</p></div>
+          </div>
+          <div class="col-sm-6 reveal" data-d="1">
+            <div class="card-anori"><span class="idx">05</span><h3>Deporte</h3><p class="muted-ice mb-0">La montaña como aula y como vínculo.</p></div>
+          </div>
+          <div class="col-sm-6 reveal" data-d="2">
+            <div class="card-anori"><span class="idx">06</span><h3>Activismo</h3><p class="muted-ice mb-0">Defensa del patrimonio criosférico común.</p></div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- pie -->
-  <div class="uc__top" style="border-top:1px solid rgba(169,196,212,.12);">
-    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
-      <span class="mono text-acero" style="font-size:.7rem; letter-spacing:.06em;">© <span data-year>2026</span> Fundación Anori · Valdivia, Chile</span>
-      <div class="slits slits--sm"><i></i><i></i></div>
+<!-- ═══════════════════ MAPA DE ACCIONES Y COLABORACIONES ═══════════════════ -->
+<section class="section bg-noche" data-screen-label="Mapa de acciones">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-8">
+        <p class="kicker reveal">05 · En terreno</p>
+        <h2 class="title-xl mt-3 reveal" data-d="1">Dónde actuamos y con quién</h2>
+        <p class="muted-ice mt-4 reveal" data-d="2" style="max-width:56ch;">
+          Dos actividades realizadas hasta ahora: el taller Aula Viva en Hornopirén y la charla de cuenca del río Valdivia y río San Pedro y criósfera, en Valdivia. El mapa crece con cada salida.
+        </p>
+      </div>
+    </div>
+
+    <div class="map-wrap reveal" data-d="1">
+      <div id="map" aria-label="Mapa con las actividades de la Fundación Anori en Chile"></div>
+
+      <!-- panel de detalle -->
+      <div class="map-panel">
+        <div class="map-detail" data-map-detail></div>
+        <div class="map-legend">
+          <span class="lg"><span class="sw" style="background:var(--glaciar);"></span> Acción Anori</span>
+        </div>
+        <p class="mono text-acero mt-3 mb-0" style="font-size:.72rem;">Toca un punto del mapa para ver el detalle. Cartografía base de OpenStreetMap.</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<script src="js/site.js?v=1"></script>
+<!-- ═══════════════════ NOTICIAS Y ACTIVIDADES ═══════════════════ -->
+<section class="section bg-noche" data-screen-label="Noticias y actividades">
+  <div class="container">
+    <div class="row align-items-end mb-5">
+      <div class="col-lg-8">
+        <p class="kicker reveal">06 · Bitácora</p>
+        <h2 class="title-xl mt-3 reveal" data-d="1">Noticias y actividades</h2>
+        <p class="muted-ice mt-4 reveal maxw-60" data-d="2">Lo que hemos hecho hasta ahora: educación ambiental en terreno y comunicación de la criósfera en espacios abiertos.</p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <a href="actividades.html" class="link-arrow text-glaciar reveal" data-d="1">Ver todas las actividades <span class="arr">→</span></a>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 reveal" data-d="1">
+        <article class="news-card">
+          <image-slot id="news-hornopiren" src="assets/photos/news-hornopiren.webp" class="news-img" shape="rounded" radius="6" placeholder="Foto del taller en Hornopirén"></image-slot>
+          <div class="news-meta"><span class="news-date">Hornopirén</span><span class="news-tag">Educación</span></div>
+          <h3 class="news-title">Aula Viva Hornopirén, con Fundación Alerce 3000</h3>
+          <p class="muted-ice news-excerpt">Camila Asenjo Vargas lideró un taller de glaciares y geomorfología para niñas y niños de la zona.</p>
+          <a href="actividades.html" class="link-arrow text-glaciar">Leer más <span class="arr">→</span></a>
+        </article>
+      </div>
+      <div class="col-md-6 reveal" data-d="2">
+        <article class="news-card">
+          <image-slot id="news-valdivia" src="assets/photos/news-valdivia.webp" class="news-img" shape="rounded" radius="6" placeholder="Foto de la charla en Valdivia"></image-slot>
+          <div class="news-meta"><span class="news-date">Valdivia</span><span class="news-tag">Comunicación</span></div>
+          <h3 class="news-title">Charla de cuenca del río Valdivia y río San Pedro y criósfera</h3>
+          <p class="muted-ice news-excerpt">Charla abierta en Valdivia para el bloque ambiental, donde la criósfera se cuenta desde la cultura local.</p>
+          <a href="actividades.html" class="link-arrow text-glaciar">Leer más <span class="arr">→</span></a>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ INVESTIGACIÓN (teaser) ═══════════════════ -->
+<section class="section bg-noche-2" data-screen-label="Investigación">
+  <div class="container">
+    <div class="row align-items-end mb-4">
+      <div class="col-lg-8">
+        <p class="kicker reveal">07 · Ciencia abierta</p>
+        <h2 class="title-xl mt-3 reveal" data-d="1">La ciencia de nuestros colaboradores</h2>
+        <p class="muted-ice mt-4 reveal maxw-60" data-d="2">Recopilamos y difundimos publicaciones de investigadoras e investigadores que colaboran con la fundación. Es su trabajo, no investigación financiada por Anori.</p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <a href="investigacion.html" class="link-arrow text-glaciar reveal" data-d="1">Ver todo <span class="arr">→</span></a>
+      </div>
+    </div>
+
+    <div class="reveal" data-d="1">
+      <div class="pub-row">
+        <span class="yr">2025</span>
+        <div><div class="tt">QFuego-Patagonia: a comprehensive glacier-related dataset for Patagonia and Tierra del Fuego</div><p class="pub-authors">Farías-Barahona, D. y coautores, entre ellos <strong>Ilaria Tabone</strong>, <strong>Claudio Bravo</strong>, <strong>Pablo Iribarren-Anacona</strong> y <strong>Thomas Loriaux</strong></p><p class="pub-source">Journal of Glaciology 72, e14</p></div>
+        <span class="tag">Datos abiertos</span>
+      </div>
+      <div class="pub-row">
+        <span class="yr">2025</span>
+        <div><div class="tt">Modeling the Distribution of Mountain Permafrost in Chile</div><p class="pub-authors">Brenning, A., Azócar, G. F., <strong>Iribarren Anacona, P.</strong>, Yoshikawa, K., Casassa, G., Straub-Bustamante, P., <strong>Fonseca-Gallardo, D.</strong>, Huenante, J.</p><p class="pub-source">Preprint EGUsphere</p></div>
+        <span class="tag">Permafrost</span>
+      </div>
+      <div class="pub-row">
+        <span class="yr">2023</span>
+        <div><div class="tt">Cascading Impacts of GLOFs in Fluvial Systems: The Laguna Espontánea GLOF in Patagonia</div><p class="pub-authors"><strong>Iribarren Anacona, P.</strong>, Mao, L., <strong>Zingaretti, V.</strong>, Durán, G., <strong>Rojas, I.</strong>, Bañales-Seguel, C.</p><p class="pub-source">En Rivers of Southern Chile and Patagonia · Springer</p></div>
+        <span class="tag">Riesgos</span>
+      </div>
+    </div>
+
+    <div class="mt-5 reveal" data-d="1">
+      <a href="investigacion.html" class="btn-anori btn-outline-ice">Ver la recopilación completa <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ APOYA (CTA) ═══════════════════ -->
+<section class="section bg-acero" data-screen-label="Apoya">
+  <div class="container text-center">
+    <img src="assets/iso-white.png" alt="" class="reveal" style="width:96px; margin-bottom:1.6rem; opacity:.92;">
+    <p class="kicker reveal" style="color:rgba(255,255,255,.8);" data-d="1">Súmate</p>
+    <h2 class="title-xl mt-3 reveal" data-d="1" style="color:#fff; max-width:18ch; margin-inline:auto;">Una voz independiente se sostiene entre muchos.</h2>
+    <p class="lead-anori reveal" data-d="2" style="color:rgba(255,255,255,.9); max-width:52ch; margin-inline:auto;">
+      Tu aporte financia educación en terreno y comunicación de la ciencia de la criósfera chilena.
+    </p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap mt-5 reveal" data-d="3">
+      <a href="apoya.html" class="btn-anori btn-carbon">Apóyanos en anori.cl <span class="arr">→</span></a>
+      <a href="https://instagram.com/fundacion.anori" target="_blank" rel="noopener" class="btn-anori btn-outline-ice" style="color:#fff; border-color:rgba(255,255,255,.5);">Síguenos en Instagram</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer" data-screen-label="Footer">
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-4 footer__brand">
+        <img src="assets/iso-white.png" alt="Anori">
+        <p class="serif" style="font-size:1.15rem; letter-spacing:.3em; color:var(--hielo); margin-bottom:1rem;">ANORI</p>
+        <p class="muted-ice" style="max-width:34ch; font-size:.95rem;">Fundación de beneficencia para la protección integral de la criósfera chilena.</p>
+        <div class="slits slits--sm mt-4"><i></i><i></i></div>
+      </div>
+      <div class="col-6 col-lg-2 footer__col">
+        <h5>Navegar</h5>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="investigacion.html">Investigación</a>
+        <a href="apoya.html">Apoya</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+      <div class="col-6 col-lg-2 footer__col">
+        <h5>Conectar</h5>
+        <a href="https://instagram.com/fundacion.anori" target="_blank" rel="noopener">Instagram</a>
+        <a href="contacto.html">Email</a>
+        <a href="investigacion.html">Datos abiertos</a>
+        <a href="apoya.html">Donar</a>
+      </div>
+      <div class="col-lg-4 footer__col">
+        <h5>Contacto</h5>
+        <p class="muted-ice mb-2" style="font-size:.95rem;">Valdivia · Región de los Ríos · Chile</p>
+        <p class="mb-2"><a href="mailto:hola@anori.cl">hola@anori.cl</a></p>
+        <p class="mono text-acero mb-0" style="font-size:.78rem;">−39.81°S · 73.24°W</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Fundación Anori · Sin fines de lucro</span>
+      <span>anori.cl</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="image-slot.js"></script>
+<script src="js/site.js?v=6"></script>
 </body>
 </html>

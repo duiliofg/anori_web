@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividades · Fundación Anori</title>
+<meta name="description" content="Talleres, charlas y educación ambiental de la Fundación Anori. Aula Viva en Hornopirén con Fundación Alerce 3000 y charla de cueca, San Pedro y criósfera en Valdivia.">
+<link rel="icon" href="assets/iso-black.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Alice&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="css/anori-site.css?v=6" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-backdrop"></div>
+<nav class="navbar-anori fixed-top scrolled" data-screen-label="Navegación">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a class="navbar-brand-anori" href="index.html" aria-label="Fundación Anori, inicio">
+      <img src="assets/iso-white.png" alt="Anori"><span class="wm">ANORI</span>
+    </a>
+    <div class="nav-anori">
+      <a href="index.html">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="investigacion.html">Investigación</a>
+      <a href="actividades.html" class="active">Actividades</a>
+      <a href="apoya.html">Apoya</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="apoya.html" class="btn-anori btn-ice" style="padding:.6rem 1.2rem;">Donar <span class="arr">→</span></a>
+    </div>
+    <button class="nav-toggle" aria-label="Abrir menú"><i></i><i></i></button>
+  </div>
+</nav>
+
+<!-- INNER HERO -->
+<header class="inner-hero bg-noche" data-screen-label="Actividades · cabecera">
+  <div class="contours" style="opacity:.6;">
+    <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#5B7C93" stroke-width="1" opacity="0.13">
+        <ellipse cx="1150" cy="140" rx="160" ry="92"/><ellipse cx="1150" cy="140" rx="320" ry="184"/>
+        <ellipse cx="1150" cy="140" rx="480" ry="276"/><ellipse cx="1150" cy="140" rx="640" ry="368"/>
+      </g>
+    </svg>
+  </div>
+  <div class="container">
+    <p class="breadcrumb-anori reveal"><a href="index.html">Inicio</a> · Actividades</p>
+    <h1 class="title-xl mt-3 mb-0 reveal" data-d="1" style="max-width:18ch;">Llevar la criósfera a las comunidades</h1>
+    <p class="lead-anori muted-ice mt-4 reveal maxw-60" data-d="2">
+      Educación ambiental, charlas y talleres en terreno. Estas son las actividades que hemos realizado hasta ahora.
+    </p>
+  </div>
+</header>
+
+<!-- ENTRADAS -->
+<section class="section bg-noche-2" data-screen-label="Entradas">
+  <div class="container">
+    <div class="tag-filter" role="group" aria-label="Filtrar actividades por tipo">
+      <button type="button" class="tag-chip active" data-filter="all">Todas</button>
+      <button type="button" class="tag-chip" data-filter="Educación ambiental">Educación ambiental</button>
+      <button type="button" class="tag-chip" data-filter="Comunicación">Comunicación</button>
+    </div>
+    <div class="entries" data-entries>
+      <details class="entry" data-tag="Educación ambiental" data-screen-label="Aula Viva Hornopirén" open>
+        <summary class="entry__head">
+          <span class="entry__thumb"><image-slot id="horno-1" src="assets/photos/horno-1.webp" shape="rounded" radius="4" placeholder="Portada"></image-slot></span>
+          <span class="entry__meta">
+            <span class="entry__date">2026</span>
+            <span class="entry__t">Aula Viva Hornopirén, con Fundación Alerce 3000</span>
+            <span class="entry__place">Hornopirén · Región de Los Lagos</span>
+          </span>
+          <span class="entry__tag">Educación ambiental</span>
+          <span class="entry__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="entry__body">
+          <p class="lead-anori">
+            Tuvimos una gran experiencia participando en la instancia educativa promovida por Fundación Alerce 3000 Aula Viva. Durante la actividad, nuestra integrante Camila Asenjo Vargas lideró un taller para niñas y niños, explorando el fascinante mundo de los glaciares y la geomorfología que moldea el territorio que habitan.
+          </p>
+          <p class="muted-ice">
+            Agradecemos a la fundación por abrir estos espacios de aprendizaje y conexión territorial, fundamentales para despertar la curiosidad científica desde temprana edad.
+          </p>
+          <div class="entry__gallery">
+            <image-slot id="horno-2" src="assets/photos/horno-2.webp" shape="rounded" radius="4" placeholder="Foto del taller"></image-slot>
+            <image-slot id="horno-3" src="assets/photos/horno-3.webp" shape="rounded" radius="4" placeholder="Niñas y niños trabajando"></image-slot>
+            <image-slot id="horno-4" src="assets/photos/horno-4.webp" shape="rounded" radius="4" placeholder="Territorio"></image-slot>
+            <image-slot id="horno-5" src="assets/photos/horno-5.webp" shape="rounded" radius="4" placeholder="Foto"></image-slot>
+          </div>
+        </div>
+      </details>
+
+      <details class="entry" data-tag="Comunicación" data-screen-label="Charla Valdivia">
+        <summary class="entry__head">
+          <span class="entry__thumb"><image-slot id="valdi-1" src="assets/photos/valdi-1.webp" shape="rounded" radius="4" placeholder="Portada"></image-slot></span>
+          <span class="entry__meta">
+            <span class="entry__date">2026</span>
+            <span class="entry__t">Charla de cuenca del río Valdivia y río San Pedro y criósfera</span>
+            <span class="entry__place">Valdivia · Región de Los Ríos</span>
+          </span>
+          <span class="entry__tag">Comunicación</span>
+          <span class="entry__chev" aria-hidden="true"></span>
+        </summary>
+        <div class="entry__body">
+          <p class="lead-anori">
+            Charla abierta en Valdivia para el bloque ambiental, donde la criósfera se cuenta desde la cultura local.
+          </p>
+          <div class="entry__gallery">
+            <image-slot id="valdi-2" src="assets/photos/valdi-2.webp" shape="rounded" radius="4" placeholder="Público asistente"></image-slot>
+            <image-slot id="valdi-3" shape="rounded" radius="4" placeholder="Foto"></image-slot>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="section--tight bg-hielo" data-screen-label="Contacto">
+  <div class="container">
+    <div class="row gx-5 gy-3 align-items-center">
+      <div class="col-lg-7">
+        <h2 class="title-lg reveal" style="max-width:24ch;">¿Quieres una actividad en tu escuela o comunidad?</h2>
+      </div>
+      <div class="col-lg-5 text-lg-end">
+        <a href="mailto:hola@anori.cl" class="btn-anori btn-steel reveal" data-d="1" style="color:#fff;">hola@anori.cl <span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer" data-screen-label="Footer">
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-4 footer__brand">
+        <img src="assets/iso-white.png" alt="Anori">
+        <p class="serif" style="font-size:1.15rem; letter-spacing:.3em; color:var(--hielo); margin-bottom:1rem;">ANORI</p>
+        <p class="muted-ice" style="max-width:34ch; font-size:.95rem;">Fundación de beneficencia para la protección integral de la criósfera chilena.</p>
+        <div class="slits slits--sm mt-4"><i></i><i></i></div>
+      </div>
+      <div class="col-6 col-lg-2 footer__col"><h5>Navegar</h5>
+        <a href="nosotros.html">Nosotros</a><a href="investigacion.html">Investigación</a><a href="actividades.html">Actividades</a><a href="apoya.html">Apoya</a><a href="contacto.html">Contacto</a>
+      </div>
+      <div class="col-6 col-lg-2 footer__col"><h5>Conectar</h5>
+        <a href="https://instagram.com/fundacion.anori" target="_blank" rel="noopener">Instagram</a><a href="contacto.html">Email</a><a href="investigacion.html">Publicaciones</a><a href="apoya.html">Donar</a>
+      </div>
+      <div class="col-lg-4 footer__col"><h5>Contacto</h5>
+        <p class="muted-ice mb-2" style="font-size:.95rem;">Valdivia · Región de los Ríos · Chile</p>
+        <p class="mb-2"><a href="mailto:hola@anori.cl">hola@anori.cl</a></p>
+        <p class="mono text-acero mb-0" style="font-size:.78rem;">−39.81°S · 73.24°W</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Fundación Anori · Sin fines de lucro</span>
+      <span>anori.cl</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="image-slot.js"></script>
+<script src="js/site.js?v=6"></script>
+</body>
+</html>

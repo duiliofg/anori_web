@@ -71,56 +71,65 @@
   // failsafe: nada debe quedar oculto
   setTimeout(function(){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }, 2500);
 
-  /* ---------- Mapa de acciones y colaboraciones ---------- */
-  var mapStage = document.querySelector('[data-map]');
-  if(mapStage){
+  /* ---------- Mapa Leaflet: acciones y colaboraciones ---------- */
+  var mapEl = document.getElementById('map');
+  if(mapEl && window.L){
     var SITES = [
-      { id:'atacama', x:46, y:11, type:'collab', loc:'Desierto de Atacama', coord:'23.5°S · 4.300 m',
-        title:'Glaciares de roca y permafrost andino',
-        body:'Colaboración para mapear reservas de hielo subterráneo en la alta cordillera del norte, claves para la seguridad hídrica de las cuencas semiáridas.' },
-      { id:'olivares', x:40, y:31, type:'accion', loc:'Glaciares de los Andes Centrales', coord:'33.5°S · 3.900 m',
-        title:'Monitoreo de balance de masa',
-        body:'Mediciones estacionales de acumulación y ablación en glaciares de la cuenca del Maipo, que abastecen de agua a la zona central de Chile.' },
-      { id:'valdivia', x:54, y:48, type:'accion', loc:'Valdivia · Región de los Ríos', coord:'39.8°S · Sede',
-        title:'Sede de la Fundación',
-        body:'Centro de operaciones, laboratorio de datos y vínculo con la academia. Desde aquí coordinamos investigación, educación y activismo.' },
-      { id:'villarrica', x:48, y:52, type:'accion', loc:'Volcán Villarrica · Araucanía', coord:'39.4°S · 2.847 m',
-        title:'Educación y glaciología volcánica',
-        body:'Programa de aula en terreno con comunidades y escuelas: la montaña como espacio de aprendizaje sobre el hielo y el riesgo volcánico.' },
-      { id:'sanrafael', x:42, y:66, type:'collab', loc:'Campo de Hielo Norte', coord:'46.7°S · Laguna San Rafael',
-        title:'Frente glaciar en retroceso',
-        body:'Colaboración de monitoreo del glaciar San Rafael, uno de los frentes de marea de más rápido cambio del hemisferio sur.' },
-      { id:'hielosur', x:38, y:78, type:'accion', loc:'Campo de Hielo Sur', coord:'49.5°S · Patagonia',
-        title:'Expedición de criósfera austral',
-        body:'Campañas de terreno sobre la tercera reserva de hielo continental del planeta: balance de masa, química del hielo y registro fotográfico.' },
-      { id:'darwin', x:50, y:92, type:'collab', loc:'Cordillera Darwin · Tierra del Fuego', coord:'54.6°S · Magallanes',
-        title:'Red austral de observación',
-        body:'Colaboración con estaciones del extremo sur para vigilar glaciares de montaña, permafrost y ecosistemas del frío más austral de Chile.' }
+      { id:'hornopiren', lat:-41.9436, lon:-72.4361, type:'accion', loc:'Hornopirén · Región de Los Lagos', coord:'41.94°S · 72.44°O',
+        title:'Aula Viva Hornopirén',
+        body:'Taller de glaciología y geomorfología para niñas y niños, en la instancia educativa Aula Viva promovida por Fundación Alerce 3000.' },
+      { id:'valdivia', lat:-39.8142, lon:-73.2459, type:'accion', loc:'Valdivia · Región de Los Ríos', coord:'39.81°S · 73.25°O',
+        title:'Charla de cuenca del río Valdivia y río San Pedro y criósfera',
+        body:'Charla abierta en Valdivia para el bloque ambiental, donde la criósfera se cuenta desde la cultura local. Valdivia es además la sede de la fundación.' }
     ];
+    var map = L.map('map', { scrollWheelZoom:false }).setView([-40.9, -72.8], 6);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution:'&copy; OpenStreetMap &middot; &copy; CARTO', subdomains:'abcd', maxZoom:18
+    }).addTo(map);
 
     var detail = document.querySelector('[data-map-detail]');
     function renderDetail(s){
       if(!detail) return;
       detail.innerHTML =
-        '<span class="mtag '+(s.type==='accion'?'accion':'collab')+'">'+(s.type==='accion'?'Acción Anori':'Colaboración')+'</span>'+
-        '<p class="kicker kicker--glaciar mt-4 mb-2">'+s.loc+'</p>'+
+        '<div class="mb-3"><span class="mtag '+(s.type==='accion'?'accion':'collab')+'">'+(s.type==='accion'?'Acción Anori':'Colaboración')+'</span></div>'+
+        '<p class="kicker kicker--glaciar mb-2">'+s.loc+'</p>'+
         '<h3 class="title-lg mb-3">'+s.title+'</h3>'+
         '<p class="muted-ice mb-4">'+s.body+'</p>'+
         '<p class="map-coords mb-0">◍ '+s.coord+'</p>';
     }
 
-    var pins = mapStage.querySelectorAll('.map-pin');
-    function activate(id){
-      var s = SITES.filter(function(x){ return x.id===id; })[0];
-      if(!s) return;
-      pins.forEach(function(p){ p.classList.toggle('active', p.dataset.site===id); });
-      renderDetail(s);
-    }
-    pins.forEach(function(p){
-      p.addEventListener('click', function(){ activate(p.dataset.site); });
+    var markers = {};
+    SITES.forEach(function(s){
+      var m = L.circleMarker([s.lat, s.lon], {
+        radius:8, weight:2, color:'#A9C4D4', fillColor:'#A9C4D4', fillOpacity:.5
+      }).addTo(map);
+      m.bindTooltip(s.title, { direction:'top', offset:[0,-8], className:'anori-tip' });
+      m.on('click', function(){
+        Object.keys(markers).forEach(function(k){ markers[k].setStyle({ fillOpacity:.5, weight:2 }); });
+        m.setStyle({ fillOpacity:.95, weight:3 });
+        renderDetail(s);
+        map.panTo([s.lat, s.lon]);
+      });
+      markers[s.id] = m;
     });
-    // estado inicial: la sede
-    activate('valdivia');
+    markers.hornopiren.setStyle({ fillOpacity:.95, weight:3 });
+    renderDetail(SITES[0]);
+  }
+
+  /* ---------- Filtro por etiqueta en Actividades ---------- */
+  var entriesWrap = document.querySelector('[data-entries]');
+  if(entriesWrap){
+    var chips = document.querySelectorAll('.tag-chip');
+    chips.forEach(function(chip){
+      chip.addEventListener('click', function(){
+        var f = chip.dataset.filter;
+        chips.forEach(function(c){ c.classList.toggle('active', c === chip); });
+        entriesWrap.querySelectorAll('.entry').forEach(function(en){
+          var show = (f === 'all') || (en.dataset.tag === f);
+          en.style.display = show ? '' : 'none';
+        });
+      });
+    });
   }
 
   /* ---------- Año dinámico en el footer ---------- */
