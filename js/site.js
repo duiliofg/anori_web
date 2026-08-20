@@ -22,13 +22,18 @@
     if(toggle) toggle.classList.remove('open');
     if(menu) menu.classList.remove('open');
     if(backdrop) backdrop.classList.remove('show');
+    document.body.classList.remove('nav-open');
   }
   if(toggle && menu){
     toggle.addEventListener('click', function(){
       var open = menu.classList.toggle('open');
       toggle.classList.toggle('open', open);
       if(backdrop) backdrop.classList.toggle('show', open);
+      document.body.classList.toggle('nav-open', open);
     });
+    if(backdrop) backdrop.addEventListener('click', closeMenu);
+    menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeMenu(); });
   }
   if(backdrop) backdrop.addEventListener('click', closeMenu);
   if(menu) menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
@@ -128,6 +133,31 @@
           var show = (f === 'all') || (en.dataset.tag === f);
           en.style.display = show ? '' : 'none';
         });
+      });
+    });
+  }
+
+  /* ---------- Formulario de contacto (Formspree) ---------- */
+  var ajaxForm = document.querySelector('[data-ajax-form]');
+  if(ajaxForm){
+    ajaxForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var btn = ajaxForm.querySelector('button[type=submit]');
+      var note = ajaxForm.querySelector('[data-form-note]');
+      var original = btn ? btn.innerHTML : '';
+      if(btn){ btn.disabled = true; btn.innerHTML = 'Enviando…'; }
+      fetch(ajaxForm.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(ajaxForm)
+      }).then(function(res){
+        if(!res.ok) throw new Error('fallo');
+        ajaxForm.reset();
+        if(note){ note.textContent = '✓ Mensaje enviado. Te responderemos pronto.'; note.style.color = 'var(--glaciar)'; note.style.display = 'block'; }
+      }).catch(function(){
+        if(note){ note.textContent = 'No pudimos enviar el mensaje. Escríbenos a fundacionanori@gmail.com'; note.style.color = '#E4A79B'; note.style.display = 'block'; }
+      }).finally(function(){
+        if(btn){ btn.disabled = false; btn.innerHTML = original; }
       });
     });
   }
