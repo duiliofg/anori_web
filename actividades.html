@@ -8,7 +8,7 @@
 <link rel="icon" href="assets/iso-black.png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Alice&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="css/anori-site.css?v=14" rel="stylesheet">
+<link href="css/anori-site.css?v=20" rel="stylesheet">
 </head>
 <body>
 
@@ -54,64 +54,8 @@
 <!-- ENTRADAS -->
 <section class="section bg-noche-2" data-screen-label="Entradas">
   <div class="container">
-    <div class="tag-filter" role="group" aria-label="Filtrar actividades por tipo">
-      <button type="button" class="tag-chip active" data-filter="all">Todas</button>
-      <button type="button" class="tag-chip" data-filter="Educación ambiental">Educación ambiental</button>
-      <button type="button" class="tag-chip" data-filter="Comunicación">Comunicación</button>
-    </div>
-    <div class="entries" data-entries>
-      <details class="entry" data-tag="Educación ambiental" data-screen-label="Aula Viva Hornopirén">
-        <summary class="entry__head">
-          <span class="entry__thumb"><image-slot id="horno-1" src="assets/photos/horno-1.webp" shape="rounded" radius="4" placeholder="Portada"></image-slot></span>
-          <span class="entry__meta">
-            <span class="entry__date">2026</span>
-            <span class="entry__t">Aula Viva Hornopirén, con Fundación Alerce 3000</span>
-            <span class="entry__place">Hornopirén · Región de Los Lagos</span>
-          </span>
-          <span class="entry__tag">Educación ambiental</span>
-          <span class="entry__chev" aria-hidden="true"></span>
-        </summary>
-        <div class="entry__body">
-          <p class="entry__lead">
-            Tuvimos una gran experiencia participando en la instancia educativa promovida por Fundación Alerce 3000 Aula Viva. Durante la actividad, nuestra integrante Camila Asenjo Vargas lideró un taller para niñas y niños, explorando el fascinante mundo de los glaciares y la geomorfología que moldea el territorio que habitan.
-          </p>
-          <p class="muted-ice">
-            Agradecemos a la fundación por abrir estos espacios de aprendizaje y conexión territorial, fundamentales para despertar la curiosidad científica desde temprana edad.
-          </p>
-          <div class="carousel"><button type="button" class="carousel__nav carousel__nav--prev" aria-label="Anterior">‹</button><div class="carousel__track">
-            <image-slot id="horno-2" src="assets/photos/horno-2.webp" shape="rounded" radius="4" placeholder="Foto del taller"></image-slot>
-            <image-slot id="horno-3" src="assets/photos/horno-3.webp" shape="rounded" radius="4" placeholder="Niñas y niños trabajando"></image-slot>
-            <image-slot id="horno-4" src="assets/photos/horno-4.webp" shape="rounded" radius="4" placeholder="Territorio"></image-slot>
-            <image-slot id="horno-5" src="assets/photos/horno-5.webp" shape="rounded" radius="4" placeholder="Foto"></image-slot>
-            </div><button type="button" class="carousel__nav carousel__nav--next" aria-label="Siguiente">›</button></div>
-        </div>
-      </details>
-
-      <details class="entry" data-tag="Comunicación" data-screen-label="Charla Valdivia">
-        <summary class="entry__head">
-          <span class="entry__thumb"><image-slot id="valdi-1" src="assets/photos/valdi-1.webp" shape="rounded" radius="4" placeholder="Portada"></image-slot></span>
-          <span class="entry__meta">
-            <span class="entry__date">2026</span>
-            <span class="entry__t">Charla de cuenca del río Valdivia y río San Pedro y criósfera</span>
-            <span class="entry__place">Valdivia · Región de Los Ríos</span>
-          </span>
-          <span class="entry__tag">Comunicación</span>
-          <span class="entry__chev" aria-hidden="true"></span>
-        </summary>
-        <div class="entry__body">
-          <p class="entry__lead">
-            Charla abierta en Valdivia para el bloque ambiental, donde la criósfera se cuenta desde la cultura local.
-          </p>
-          <p class="muted-ice">
-            Como regalo dejamos un mapa hidrográfico de la cuenca, disponible para descargar.
-          </p>
-          <a href="https://drive.google.com/file/d/1uSYNrDnhmtU7pxS_xU1W6p5PsiFPlmsj/view?usp=drive_link" target="_blank" rel="noopener" class="btn-anori btn-outline-ice">Descargar el mapa hidrográfico <span class="arr">→</span></a>
-          <div class="carousel"><button type="button" class="carousel__nav carousel__nav--prev" aria-label="Anterior">‹</button><div class="carousel__track">
-            <image-slot id="valdi-2" src="assets/photos/valdi-2.webp" shape="rounded" radius="4" placeholder="Público asistente"></image-slot>
-            </div><button type="button" class="carousel__nav carousel__nav--next" aria-label="Siguiente">›</button></div>
-        </div>
-      </details>
-    </div>
+    <div class="tag-filter" data-entries-filter data-dim="tag" role="group" aria-label="Filtrar actividades por tipo"></div>
+    <div class="entries" data-entries></div>
   </div>
 </section>
 
@@ -161,6 +105,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="image-slot.js"></script>
-<script src="js/site.js?v=14"></script>
+<script src="js/actividades.js?v=1"></script>
+<script src="js/site.js?v=17"></script>
 </body>
 </html>

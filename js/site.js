@@ -76,17 +76,77 @@
   // failsafe: nada debe quedar oculto
   setTimeout(function(){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }, 2500);
 
+  /* ---------- Actividades: se generan desde js/actividades.js ---------- */
+  var ACTS = window.ANORI_ACTIVIDADES || [];
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function carruselHTML(a){
+    if(!a.fotos || !a.fotos.length) return '';
+    var slots = a.fotos.map(function(src, i){
+      return '<image-slot id="' + esc(a.id) + '-f' + i + '" src="' + esc(src) + '" shape="rounded" radius="4" placeholder="Foto"></image-slot>';
+    }).join('');
+    return '<div class="carousel">' +
+      '<button type="button" class="carousel__nav carousel__nav--prev" aria-label="Anterior">&#8249;</button>' +
+      '<div class="carousel__track">' + slots + '</div>' +
+      '<button type="button" class="carousel__nav carousel__nav--next" aria-label="Siguiente">&#8250;</button>' +
+      '</div>';
+  }
+
+  var entriesWrap = document.querySelector('[data-entries]');
+  if(entriesWrap && ACTS.length){
+    entriesWrap.innerHTML = ACTS.map(function(a){
+      var cuerpo = (a.cuerpo || []).map(function(p, i){
+        return '<p class="' + (i === 0 ? 'entry__lead' : 'muted-ice') + '">' + esc(p) + '</p>';
+      }).join('');
+      var enlace = a.enlace ? '<a href="' + esc(a.enlace.url) + '" target="_blank" rel="noopener" class="btn-anori btn-outline-ice">' + esc(a.enlace.texto) + ' <span class="arr">&rarr;</span></a>' : '';
+      return '<details class="entry" data-tag="' + esc(a.tag) + '" data-screen-label="' + esc(a.titulo) + '">' +
+        '<summary class="entry__head">' +
+          '<span class="entry__thumb"><image-slot id="' + esc(a.id) + '-portada" src="' + esc(a.portada) + '" shape="rounded" radius="4" placeholder="Portada"></image-slot></span>' +
+          '<span class="entry__meta">' +
+            '<span class="entry__date">' + esc(a.fecha) + '</span>' +
+            '<span class="entry__t">' + esc(a.titulo) + '</span>' +
+            '<span class="entry__place">' + esc(a.lugar) + '</span>' +
+          '</span>' +
+          '<span class="entry__tag">' + esc(a.tag) + '</span>' +
+          '<span class="entry__chev" aria-hidden="true"></span>' +
+        '</summary>' +
+        '<div class="entry__body">' + cuerpo + enlace + carruselHTML(a) + '</div>' +
+      '</details>';
+    }).join('');
+
+    var chipsWrap = document.querySelector('[data-entries-filter]');
+    if(chipsWrap){
+      var tags = [];
+      ACTS.forEach(function(a){ if(tags.indexOf(a.tag) < 0) tags.push(a.tag); });
+      chipsWrap.innerHTML = '<button type="button" class="tag-chip active" data-filter="all">Todas</button>' +
+        tags.map(function(t){ return '<button type="button" class="tag-chip" data-filter="' + esc(t) + '">' + esc(t) + '</button>'; }).join('');
+    }
+  }
+
+  var ultimas = document.querySelector('[data-ultimas]');
+  if(ultimas && ACTS.length){
+    ultimas.innerHTML = ACTS.slice(0, 2).map(function(a, i){
+      return '<div class="col-md-6"><article class="news-card">' +
+        '<image-slot id="' + esc(a.id) + '-card" src="' + esc(a.portada) + '" class="news-img" shape="rounded" radius="6" placeholder="Foto"></image-slot>' +
+        '<div class="news-meta"><span class="news-date">' + esc(a.fecha) + '</span><span class="news-tag">' + esc(a.tag) + '</span></div>' +
+        '<h3 class="news-title">' + esc(a.titulo) + '</h3>' +
+        '<p class="muted-ice news-excerpt">' + esc(a.resumen || '') + '</p>' +
+        '<a href="actividades.html" class="link-arrow text-glaciar">Leer más <span class="arr">&rarr;</span></a>' +
+      '</article></div>';
+    }).join('');
+  }
+
   /* ---------- Mapa Leaflet: acciones y colaboraciones ---------- */
   var mapEl = document.getElementById('map');
   if(mapEl && window.L){
-    var SITES = [
-      { id:'hornopiren', lat:-41.9436, lon:-72.4361, type:'accion', loc:'Hornopirén · Región de Los Lagos', coord:'41.94°S · 72.44°O',
-        title:'Aula Viva Hornopirén',
-        body:'Taller de glaciología y geomorfología para niñas y niños, en la instancia educativa Aula Viva promovida por Fundación Alerce 3000.' },
-      { id:'valdivia', lat:-39.8142, lon:-73.2459, type:'accion', loc:'Valdivia · Región de Los Ríos', coord:'39.81°S · 73.25°O',
-        title:'Charla de cuenca del río Valdivia y río San Pedro y criósfera',
-        body:'Charla abierta en Valdivia para el bloque ambiental, donde la criósfera se cuenta desde la cultura local. Valdivia es además la sede de la fundación.' }
-    ];
+    var SITES = ACTS.filter(function(a){ return a.lat && a.lon; }).map(function(a){
+      return {
+        id: a.id, lat: a.lat, lon: a.lon, type: 'accion', loc: a.lugar,
+        coord: Math.abs(a.lat).toFixed(2) + '°S · ' + Math.abs(a.lon).toFixed(2) + '°O',
+        title: a.titulo,
+        body: (a.cuerpo && a.cuerpo[0]) || ''
+      };
+    });
     var map = L.map('map', { scrollWheelZoom:false }).setView([-40.9, -72.8], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution:'&copy; OpenStreetMap &middot; &copy; CARTO', subdomains:'abcd', maxZoom:18
@@ -117,29 +177,70 @@
       });
       markers[s.id] = m;
     });
-    markers.hornopiren.setStyle({ fillOpacity:.95, weight:3 });
-    renderDetail(SITES[0]);
+    if(SITES.length){
+      markers[SITES[0].id].setStyle({ fillOpacity:.95, weight:3 });
+      renderDetail(SITES[0]);
+    }
   }
 
-  /* ---------- Filtro por etiqueta en Actividades ---------- */
+  /* ---------- Publicaciones: se leen desde js/publicaciones.js ---------- */
+  var PUBS = window.ANORI_PUBLICACIONES || [];
+  var pubsWrap = document.querySelector('[data-pubs]');
+  if(pubsWrap && PUBS.length){
+    pubsWrap.insertAdjacentHTML('afterbegin', PUBS.map(function(p){
+      return '<div class="pub-row" data-tag="' + esc(p.tag) + '" data-authors="' + esc((p.colaboradores || []).join('|')) + '">' +
+        '<span class="yr">' + esc(p.anio) + '</span>' +
+        '<div><div class="tt"><a class="pub-link" href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.titulo) + '</a></div>' +
+        '<p class="pub-authors">' + (p.autores || '') + '</p>' +
+        '<p class="pub-source">' + esc(p.fuente || '') + '</p></div>' +
+        '<span class="tag">' + esc(p.tag) + '</span>' +
+      '</div>';
+    }).join(''));
+
+    var tagWrap = document.querySelector('[data-pubs-filter]');
+    if(tagWrap){
+      var tags = [];
+      PUBS.forEach(function(p){ if(tags.indexOf(p.tag) < 0) tags.push(p.tag); });
+      tagWrap.innerHTML = '<span class="filter-label">Tópico</span>' +
+        '<button type="button" class="tag-chip active" data-filter="all">Todos</button>' +
+        tags.map(function(t){ return '<button type="button" class="tag-chip" data-filter="' + esc(t) + '">' + esc(t) + '</button>'; }).join('');
+    }
+  }
+
+  /* ---------- Filtros por etiqueta y por colaborador ---------- */
   document.querySelectorAll('[data-entries], [data-filterable]').forEach(function(wrap){
-    var group = wrap.previousElementSibling;
-    while(group && !group.classList.contains('tag-filter')) group = group.previousElementSibling;
-    if(!group) return;
-    var chips = group.querySelectorAll('.tag-chip');
-    var items = wrap.querySelectorAll('.entry, .pub-row');
+    var groups = [], prev = wrap.previousElementSibling;
+    while(prev && prev.classList && (prev.classList.contains('tag-filter') || prev.classList.contains('pub-filters'))){
+      groups.unshift(prev); prev = prev.previousElementSibling;
+    }
+    if(!groups.length) return;
+    var items = [].slice.call(wrap.querySelectorAll('.entry, .pub-row'));
+    if(!items.length) return;
     var empty = wrap.querySelector('.pub-empty');
-    chips.forEach(function(chip){
-      chip.addEventListener('click', function(){
-        var f = chip.dataset.filter, shown = 0;
-        chips.forEach(function(c){ c.classList.toggle('active', c === chip); });
-        items.forEach(function(en){
-          var show = (f === 'all') || (en.dataset.tag === f);
-          en.style.display = show ? '' : 'none';
-          if(show) shown++;
+    function apply(){
+      var shown = 0;
+      items.forEach(function(en){
+        var ok = groups.every(function(g){
+          var active = g.querySelector('.tag-chip.active');
+          var f = active ? active.dataset.filter : 'all';
+          var dim = g.dataset.dim || 'tag';
+          if(f === 'all') return true;
+          var val = en.dataset[dim] || '';
+          if(f === '__any') return val.length > 0;
+          return val.split('|').indexOf(f) > -1;
         });
-        if(empty) empty.style.display = shown ? 'none' : 'block';
-        wrap.scrollTop = 0;
+        en.style.display = ok ? '' : 'none';
+        if(ok) shown++;
+      });
+      if(empty) empty.style.display = shown ? 'none' : 'block';
+      wrap.scrollTop = 0;
+    }
+    groups.forEach(function(g){
+      g.addEventListener('click', function(e){
+        var chip = e.target.closest('.tag-chip');
+        if(!chip) return;
+        g.querySelectorAll('.tag-chip').forEach(function(c){ c.classList.toggle('active', c === chip); });
+        apply();
       });
     });
   });
