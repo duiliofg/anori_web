@@ -8,6 +8,22 @@
    ================================================================= */
 window.ANORI_ACTIVIDADES = [
   {
+    id: 'prensa-lmd',
+    fecha: 'Agosto 2026',
+    tag: 'Aparición en prensa',
+    lugar: 'Le Monde Diplomatique Chile',
+    titulo: 'Encuentro por la protección y defensa de la cuenca Valdivia',
+    resumen: 'Le Monde Diplomatique Chile cubrió el encuentro por la cuenca del río Valdivia, donde participamos.',
+    cuerpo: [
+      'Le Monde Diplomatique Chile publicó una nota sobre el encuentro por la protección y defensa de la cuenca Valdivia, instancia en la que participamos junto a organizaciones del territorio.'
+    ],
+    enlace: {
+      texto: 'Leer la nota en Le Monde Diplomatique',
+      url: 'https://www.lemondediplomatique.cl/encuentro-por-la-proteccion-y-defensa-de-la-cuenca-valdivia.html'
+    },
+    portada: 'assets/photos/valdi-2.webp'
+  },
+  {
     id: 'hornopiren',
     fecha: 'Julio 2026',
     tag: 'Educación ambiental',
