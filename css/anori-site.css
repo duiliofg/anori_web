@@ -461,6 +461,10 @@ strong{ font-weight: 600; color: var(--blanco); }
 #map{ min-height:600px; height:100%; background:var(--noche-2); border-radius:8px; z-index:0; }
 @media(max-width:900px){ #map{ min-height:420px; } }
 .leaflet-container{ font-family:var(--sans); background:var(--noche-2); }
+.leaflet-tile-pane{ filter:saturate(.85); }
+@keyframes anori-latido{ 0%{ stroke-width:2; stroke-opacity:1; } 70%{ stroke-width:18; stroke-opacity:0; } 100%{ stroke-width:18; stroke-opacity:0; } }
+.anori-halo{ animation:anori-latido 2.4s ease-out infinite; }
+@media(prefers-reduced-motion:reduce){ .anori-halo{ animation:none; stroke-opacity:0; } }
 .leaflet-control-attribution{ background:rgba(27,29,34,.7) !important; color:var(--acero) !important; font-family:var(--mono); font-size:.62rem; }
 .leaflet-control-attribution a{ color:var(--glaciar) !important; }
 .leaflet-bar a{ background:var(--noche) !important; color:var(--hielo) !important; border-color:rgba(169,196,212,.2) !important; }

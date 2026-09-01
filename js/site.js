@@ -148,8 +148,8 @@
       };
     });
     var map = L.map('map', { scrollWheelZoom:false }).setView([-40.9, -72.8], 6);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution:'&copy; OpenStreetMap &middot; &copy; CARTO', subdomains:'abcd', maxZoom:18
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:'&copy; OpenStreetMap', maxZoom:18
     }).addTo(map);
 
     var detail = document.querySelector('[data-map-detail]');
@@ -165,20 +165,23 @@
 
     var markers = {};
     SITES.forEach(function(s){
+      L.circleMarker([s.lat, s.lon], {
+        radius:7, weight:2, color:'#A9C4D4', fill:false, className:'anori-halo', interactive:false
+      }).addTo(map);
       var m = L.circleMarker([s.lat, s.lon], {
-        radius:8, weight:2, color:'#A9C4D4', fillColor:'#A9C4D4', fillOpacity:.5
+        radius:7, weight:2, color:'#FFFFFF', fillColor:'#20303A', fillOpacity:1
       }).addTo(map);
       m.bindTooltip(s.title, { direction:'top', offset:[0,-8], className:'anori-tip' });
       m.on('click', function(){
-        Object.keys(markers).forEach(function(k){ markers[k].setStyle({ fillOpacity:.5, weight:2 }); });
-        m.setStyle({ fillOpacity:.95, weight:3 });
+        Object.keys(markers).forEach(function(k){ markers[k].setStyle({ radius:7, weight:2, color:'#FFFFFF', fillColor:'#20303A' }); });
+        m.setStyle({ radius:10, weight:3, color:'#FFFFFF', fillColor:'#5B7C93' });
         renderDetail(s);
         map.panTo([s.lat, s.lon]);
       });
       markers[s.id] = m;
     });
     if(SITES.length){
-      markers[SITES[0].id].setStyle({ fillOpacity:.95, weight:3 });
+      markers[SITES[0].id].setStyle({ radius:10, weight:3, color:'#FFFFFF', fillColor:'#5B7C93' });
       renderDetail(SITES[0]);
     }
   }
