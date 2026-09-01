@@ -263,7 +263,7 @@
         ajaxForm.reset();
         if(note){ note.textContent = '✓ Mensaje enviado. Te responderemos pronto.'; note.style.color = 'var(--glaciar)'; note.style.display = 'block'; }
       }).catch(function(){
-        if(note){ note.textContent = 'No pudimos enviar el mensaje. Escríbenos a hola@anori.cl'; note.style.color = '#E4A79B'; note.style.display = 'block'; }
+        if(note){ note.textContent = 'No pudimos enviar el mensaje. Escríbenos a contacto@anori.cl'; note.style.color = '#E4A79B'; note.style.display = 'block'; }
       }).finally(function(){
         if(btn){ btn.disabled = false; btn.innerHTML = original; }
       });
