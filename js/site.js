@@ -136,6 +136,48 @@
     }).join('');
   }
 
+  /* ---------- Recursos pedagógicos: se generan desde js/recursos.js ---------- */
+  var RECS = window.ANORI_RECURSOS || [];
+  var recWrap = document.querySelector('[data-recursos]');
+  if(recWrap && RECS.length){
+    recWrap.innerHTML = RECS.map(function(t){
+      var ficha = (t.ficha || []).map(function(f){
+        return '<tr><th>' + esc(f[0]) + '</th><td>' + esc(f[1]) + '</td></tr>';
+      }).join('');
+      var total = (t.actividades || []).length;
+      var cards = (t.actividades || []).map(function(a, i){
+        var temas = (a.temas || []).map(function(x){ return '<span>' + esc(x) + '</span>'; }).join('');
+        var files = (a.archivos || []).map(function(f){
+          var meta = 'PDF' + (f.paginas ? ' · ' + f.paginas + ' págs.' : '') + (f.docx ? ' · Word editable' : '');
+          return '<div class="res-file">' +
+            '<span><span class="res-file__k">' + esc(f.tipo) + '</span><span class="res-file__m">' + esc(meta) + '</span></span>' +
+            '<span class="res-file__a">' +
+              (f.pdf ? '<a class="res-btn res-btn--pdf" href="' + esc(f.pdf) + '" target="_blank" rel="noopener" aria-label="' + esc(f.tipo + ', ' + a.titulo + ' (PDF)') + '">PDF</a>' : '') +
+              (f.docx ? '<a class="res-btn" href="' + esc(f.docx) + '" download aria-label="' + esc(f.tipo + ', ' + a.titulo + ' (Word)') + '">Word</a>' : '') +
+            '</span></div>';
+        }).join('');
+        return '<article class="res-card" data-screen-label="' + esc(a.titulo) + '">' +
+          '<div class="res-card__top"><span class="res-n">' + esc(a.n || '') + '</span><span class="entry__tag">Actividad ' + (i + 1) + ' de ' + total + '</span></div>' +
+          '<h3>' + esc(a.titulo) + '</h3>' +
+          (a.pregunta ? '<p class="res-q">' + esc(a.pregunta) + '</p>' : '') +
+          (a.resumen ? '<p class="res-sum">' + esc(a.resumen) + '</p>' : '') +
+          (temas ? '<div class="res-topics">' + temas + '</div>' : '') +
+          (a.espacio ? '<p class="res-space"><b>Espacio</b>' + esc(a.espacio) + '</p>' : '') +
+          '<div class="res-files">' + files + '</div>' +
+        '</article>';
+      }).join('');
+      return '<div class="res-taller" id="' + esc(t.id) + '">' +
+        '<div class="row gx-5 gy-4">' +
+          '<div class="col-lg-5"><p class="kicker kicker--glaciar mb-3">Taller</p>' +
+            '<h2 class="title-lg mb-3">' + esc(t.taller) + '</h2>' +
+            (t.bajada ? '<p class="muted-ice mb-0">' + esc(t.bajada) + '</p>' : '') + '</div>' +
+          '<div class="col-lg-7"><table class="spec-list"><tbody>' + ficha + '</tbody></table></div>' +
+        '</div>' +
+        '<div class="res-grid">' + cards + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
   /* ---------- Mapa Leaflet: acciones y colaboraciones ---------- */
   var mapEl = document.getElementById('map');
   if(mapEl && window.L){
