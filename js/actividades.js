@@ -8,6 +8,29 @@
    ================================================================= */
 window.ANORI_ACTIVIDADES = [
   {
+    id: 'uach-didactica',
+    fecha: 'Septiembre 2026',
+    tag: 'Formación docente',
+    lugar: 'Universidad Austral de Chile · Valdivia',
+    lat: -39.8063, lon: -73.2496,
+    titulo: 'Didáctica de las Ciencias en la Universidad Austral de Chile',
+    resumen: 'Compartimos nuestra experiencia llevando la criósfera al aula con profesoras y profesores en formación del Programa de Formación Pedagógica.',
+    cuerpo: [
+      'Fuimos invitados al ramo de Didáctica de las Ciencias del Programa de Formación Pedagógica de la Universidad Austral de Chile, dirigido por la Dra. Tamara Busquets, para compartir nuestra experiencia llevando la criósfera al aula con profesoras y profesores en formación.',
+      'Durante la sesión realizamos juntos el experimento del glaciar de laboratorio, en el que se mide cómo distintas fuentes de energía derriten un bloque de hielo, y conversamos sobre cómo adaptar estas actividades a cada nivel escolar. Agradecemos a la Dra. Busquets y a las y los estudiantes por abrirnos este espacio.',
+      'Las planificaciones de nuestras actividades están disponibles para descargar en la sección Recursos.'
+    ],
+    enlace: {
+      texto: 'Ver los recursos pedagógicos',
+      url: 'recursos.html'
+    },
+    portada: 'assets/photos/uach-2.webp',
+    fotos: [
+      'assets/photos/uach-1.webp',
+      'assets/photos/uach-2.webp'
+    ]
+  },
+  {
     id: 'prensa-lmd',
     fecha: 'Agosto 2026',
     tag: 'Aparición en prensa',

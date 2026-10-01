@@ -98,7 +98,7 @@
       var cuerpo = (a.cuerpo || []).map(function(p, i){
         return '<p class="' + (i === 0 ? 'entry__lead' : 'muted-ice') + '">' + esc(p) + '</p>';
       }).join('');
-      var enlace = a.enlace ? '<a href="' + esc(a.enlace.url) + '" target="_blank" rel="noopener" class="btn-anori btn-outline-ice">' + esc(a.enlace.texto) + ' <span class="arr">&rarr;</span></a>' : '';
+      var enlace = a.enlace ? '<a href="' + esc(a.enlace.url) + '"' + (/^https?:/.test(a.enlace.url) ? ' target="_blank" rel="noopener"' : '') + ' class="btn-anori btn-outline-ice">' + esc(a.enlace.texto) + ' <span class="arr">&rarr;</span></a>' : '';
       return '<details class="entry" data-tag="' + esc(a.tag) + '" data-screen-label="' + esc(a.titulo) + '">' +
         '<summary class="entry__head">' +
           '<span class="entry__thumb"><image-slot id="' + esc(a.id) + '-portada" src="' + esc(a.portada) + '" shape="rounded" radius="4" placeholder="Portada"></image-slot></span>' +
